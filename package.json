@@ -1,5 +1,5 @@
 {
-  "name": "excuse-generator",
+  "name": "excuse-generat",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,10 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "express": "^5.1.0",
-    "mongoose": "^8.18.1",
+    "@tailwindcss/vite": "^4.1.13",
+    "@tanstack/react-query": "^5.89.0",
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "tailwindcss": "^4.1.13"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
