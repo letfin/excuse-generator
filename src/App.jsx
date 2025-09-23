@@ -24,36 +24,36 @@ async function addExcuse(data) {
 }
 
 
-function MainApp() {
-  const [author, setAuthor] = useState("");
-  const [excuse, setExcuse] = useState("");
-  const [count, setCount] = useState(1);
-  const [data, setData] = useState([])
+export default function App() {
+   const [author, setAuthor] = useState("");
+    const [excuse, setExcuse] = useState("");
+    const [count, setCount] = useState(1);
+    const [data, setData] = useState([])
 
-  const queryClient = useQueryClient();
+    const queryClient = useQueryClient();
 
-  const mutation = useMutation({
-    mutationFn: addExcuse,
-    onSuccess: (data) => {
-      queryClient.invalidateQueries(["excuses"]);
-      setAuthor("");
-      setExcuse("");
-      alert(data.message)
-    },
-  });
+    const mutation = useMutation({
+      mutationFn: addExcuse,
+      onSuccess: (data) => {
+        queryClient.invalidateQueries(["excuses"]);
+        setAuthor("");
+        setExcuse("");
+        alert(data.message)
+      },
+    });
 
-  const mutationx2 = useMutation({
-    mutationFn: fetchExcuses,
-    onSuccess: (data) => {
-      queryClient.invalidateQueries(["excuses", count]);
-      setCount(1)
-      setData(data)
-      console.log(data)
-    },
-  });
+    const mutationx2 = useMutation({
+      mutationFn: fetchExcuses,
+      onSuccess: (data) => {
+        queryClient.invalidateQueries(["excuses", count]);
+        setCount(1)
+        setData(data)
+        console.log(data)
+      },
+    });
 
   return (
-    <div className="min-h-screen w-full bg-gray-50 flex flex-col items-center p-6 gap-6" >
+     <div className="min-h-screen w-full bg-gray-50 flex flex-col items-center p-6 gap-6" >
 
       <h1 className="text-3xl font-bold text-gray-800">Excuse Generator</h1>
 
@@ -121,23 +121,5 @@ function MainApp() {
       </div>
 
     </div>
-  );
-}
-function AdminPanelPage() {
-  return (
-   <div>
-      <AdminPanel />
-    </div>
-  );
-}
-
-export default function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<MainApp />} />
-        <Route path="/admin" element={<AdminPanelPage />} />
-      </Routes>
-    </BrowserRouter>
   );
 }
