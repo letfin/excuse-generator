@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import "./App.css";
 
+import AdminPanel from "./components/AdminPanel/AdminPanel";
 
 async function fetchExcuses(count) {
   const res = await fetch(`http://localhost:3000/random-excuse/${count}`);
@@ -21,7 +24,7 @@ async function addExcuse(data) {
 }
 
 
-export default function App() {
+function MainApp() {
   const [author, setAuthor] = useState("");
   const [excuse, setExcuse] = useState("");
   const [count, setCount] = useState(1);
@@ -50,7 +53,7 @@ export default function App() {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center p-6 gap-6">
+    <div className="min-h-screen w-full bg-gray-50 flex flex-col items-center p-6 gap-6" >
 
       <h1 className="text-3xl font-bold text-gray-800">Excuse Generator</h1>
 
@@ -118,5 +121,23 @@ export default function App() {
       </div>
 
     </div>
+  );
+}
+function AdminPanelPage() {
+  return (
+   <div>
+      <AdminPanel />
+    </div>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<MainApp />} />
+        <Route path="/admin" element={<AdminPanelPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
