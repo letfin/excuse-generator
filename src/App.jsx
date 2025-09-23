@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+
 import "./App.css";
 
 import AdminPanel from "./components/AdminPanel/AdminPanel";
@@ -53,10 +53,23 @@ export default function App() {
     });
 
   return (
-     <div className="min-h-screen w-full bg-gray-50 flex flex-col items-center p-6 gap-6" >
+     <div className="h-screen w-full bg-[#212121] flex flex-col items-center gap-10" style={{ fontFamily: 'Inter', fontStyle: 'italic' }}> 
+      <header className="w-full h-1/7 border-b-10 border-[#EF8000] flex items-center justify-between p-4">
+      
+      <img src="/logo.png" alt="logo" className="w-64 h-64 hover:rotate-180 duration-300 " />
 
-      <h1 className="text-3xl font-bold text-gray-800">Excuse Generator</h1>
+      <div className="flex gap-10 items-center justify-center">
+        <div className="w-24 h-24 bg-[#EF8000] rounded-full flex items-center justify-center color-black text-6xl hover:bg-[#c06600] hover:border-1 hover:scale-125 duration-300  group transition-all">
+        <i class="fa-brands fa-github"></i>
+        </div>
+        <div className="w-20 h-20 bg-[#EF8000] rounded-full flex items-center justify-center color-black text-6xl hover:bg-[#c06600] hover:border-1 hover:scale-115 duration-300 ease-in-out group transition-all">
+        <i class="fa-solid fa-plus"></i>
+        </div>
+      </div>
 
+      </header>
+     
+{/* 
       <div className="w-full max-w-md bg-white rounded-2xl shadow p-4 flex flex-col gap-3">
         <input
           className="border rounded-lg px-3 py-2"
@@ -80,26 +93,20 @@ export default function App() {
           {mutation.isLoading ? "Saving..." : "Add Excuse"}
     
         </button>
-      </div>
+      </div> */}
 
       
-      <div className="w-full max-w-md bg-white rounded-2xl shadow p-4 flex flex-col gap-3">
-        <input
+      <div className="w-[80%] h-1/2 border-7 border-[#EF8000] rounded-2xl shadow p-4 flex flex-col gap-3">
+        {/* <input
           type="number"
           min={1}
           max={5}
           className="border rounded-lg px-3 py-2"
           value={count}
           onChange={(e) => setCount(Number(e.target.value))}
-        />
+        /> */}
 
-        <button
-          className="bg-green-600 text-white rounded-lg py-2 hover:bg-green-700"
-          onClick={() => mutationx2.mutate(count)}
-          disabled={mutationx2.isLoading}
-        >
-          {mutationx2.isLoading ? "Loading..." : "Get Random Excuses"}
-        </button>
+      
 
         {mutationx2.isError && (
           <p className="text-red-500">Error fetching excuses</p>
@@ -119,7 +126,14 @@ export default function App() {
           </div>
         )}
       </div>
-
+  <button
+          className="w-96 h-24 border-7 rounded-3xl font-bold text-5xl text-[#EF8000] flex items-center justify-center gap-4 active:scale-100 hover:scale-125 duration-300  group transition-all "
+          onClick={() => mutationx2.mutate(count)}
+          disabled={mutationx2.isLoading}
+        >
+          {mutationx2.isLoading ? "Loading..." : "Generate"}
+          <img src="/generate.png" alt=""  className="w-20 h-20 "/>
+        </button>
     </div>
   );
 }
