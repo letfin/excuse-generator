@@ -6,7 +6,7 @@ import "./App.css";
 import AdminPanel from "./components/AdminPanel/AdminPanel";
 
 async function fetchExcuses(count) {
-  const res = await fetch(`http://localhost:3000/random-excuse`);
+  const res = await fetch(`https://excuse-generator-45lh.onrender.com//random-excuse`);
   if (!res.ok) throw new Error("Error fetching excuses");
   return res.json();
 
@@ -14,7 +14,7 @@ async function fetchExcuses(count) {
 
 async function addExcuse(data) {
   console.log(JSON.stringify(data))
-  const res = await fetch("http://localhost:3000/excuse-add", {
+  const res = await fetch("https://excuse-generator-45lh.onrender.com//excuse-add", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
