@@ -161,14 +161,18 @@ export default function App() {
           </div>
         )}
       </div>
-  <button
+ <button
           className="w-96 h-24 border-7 rounded-3xl font-bold text-5xl text-[#EF8000] flex items-center justify-center gap-4 active:scale-100 hover:scale-125 duration-300  group transition-all "
           onClick={() => mutationx2.mutate(count)}
           disabled={mutationx2.isLoading}
         >
           {mutationx2.isLoading ? "Loading..." : "Generate"}
-          <img src="/generate.png" alt=""  className="w-20 h-20 "/>
+          <img src="/generate.png" alt=""  className="w-20 h-20 hover:rotate-360 hover:scale-110 duration-500  group transition-all"/>
         </button>
+
+        <div className="absolute bottom-10 right-10 w-24 h-24 bg-[#EF8000] rounded-full flex items-center justify-center color-black text-6xl hover:bg-[#c06600]  hover:scale-125 duration-300  group transition-all">
+        <i class="fa-solid fa-music"></i>
+        </div>
     </div>
   );
 }
