@@ -4,7 +4,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./index.css";
 import App from "./App.jsx";
 
-// створюємо інстанс клієнта React Query
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")).render(

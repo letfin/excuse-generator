@@ -6,7 +6,7 @@ import "./App.css";
 import AdminPanel from "./components/AdminPanel/AdminPanel";
 
 async function fetchExcuses(count) {
-  const res = await fetch(`http://localhost:3000/random-excuse/${count}`);
+  const res = await fetch(`http://localhost:3000/random-excuse/`);
   if (!res.ok) throw new Error("Error fetching excuses");
   return res.json();
 
