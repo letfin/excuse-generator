@@ -14,12 +14,9 @@ mongoose.connect(`mongodb+srv://admin:T1sTDsv2tuqohWzL@cluster0.kijny7k.mongodb.
 .then(async()=> {
     console.log(`Connected to DB`);
 
-   
-
 });
 
-
-  const excuseSchema = new mongoose.Schema({
+const excuseSchema = new mongoose.Schema({
     author: String,
     excuse: String,
     date:  String,
@@ -27,6 +24,8 @@ mongoose.connect(`mongodb+srv://admin:T1sTDsv2tuqohWzL@cluster0.kijny7k.mongodb.
 });
 
 const Excuse = mongoose.model('Excuse', excuseSchema);
+
+  
 
 
 
@@ -40,22 +39,21 @@ app.get('/random-excuse', async (req, res) => {
     }
 });
 
-app.post('/excuse-add', (req, res) => {
+app.post('/excuse-add', async(req, res) => {
     const {author, excuse} = req.body;
     let trimedExcuse = excuse.trim();
-    console.log(trimedExcuse)
     let filteredExcuse = trimedExcuse.split(' ').filter(word => !/[!@#$%^&*(\[)\]_+\-=~`'",?.]/.test(word));
     if(excuse.length <= 200 && filteredExcuse.length >= 3){
         try{
         const excuseModel = Excuse({author: author, excuse: excuse, date: getCurrentDate() });
-        excuseModel.save();
+        await excuseModel.save();
         res.send('Excuse saved');
     }catch(err){
         res.status(400).send('Request error');
     }
         
     } else {
-        res.status(404).send('Bad request');
+        res.status(400).send('Bad request');
     }
 
     
@@ -65,7 +63,6 @@ app.get(`/all-members`, async(req, res) => {
 try{
     const excuses = await Excuse.find({});
     let authors = [];
-    console.log(await Excuse.find());
     excuses.forEach((i) => {
         if (i.author !== undefined) authors.push(i.author);
     });
@@ -83,6 +80,8 @@ app.get(`/like/:id`, async(req, res) => {
         let ipArr = currentExcuse.likes;
         if (!ipArr.includes(ip_adress)) {
             ipArr.push(ip_adress);
+        }else{
+            ipArr.filter(ip => ip != ip_adress);
         }   
         await Excuse.findOneAndUpdate({_id:id}, {likes:ipArr}, {new:true});
         res.send('Like saved');
@@ -92,13 +91,15 @@ app.get(`/like/:id`, async(req, res) => {
     
 });
 
+app.get('/admin', (req, res) => {
+    res.sendFile(path.join(__dirname, '..' , 'src', 'components' , 'AdminPanel', 'AdminPanel.jsx' ));
+});
+
+
 app.get(/.*/, (req,res) => {
     res.sendFile(path.join(__dirname, '..' , 'dist' , 'index.html'));
 });
 
-app.get('/admin', (req, res) => {
-    res.sendFile(path.join(__dirname, '..' , 'src', 'components' , 'Admin', 'Admin.jsx' ));
-});
 
 app.listen(PORT, ()=>{
     console.log(`Server is running on port:${PORT}`)

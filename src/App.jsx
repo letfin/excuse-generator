@@ -6,13 +6,14 @@ import "./App.css";
 import AdminPanel from "./components/AdminPanel/AdminPanel";
 
 async function fetchExcuses(count) {
-  const res = await fetch(`http://localhost:3000/random-excuse/`);
+  const res = await fetch(`http://localhost:3000/random-excuse`);
   if (!res.ok) throw new Error("Error fetching excuses");
   return res.json();
 
 }
 
 async function addExcuse(data) {
+  console.log(JSON.stringify(data))
   const res = await fetch("http://localhost:3000/excuse-add", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -23,8 +24,28 @@ async function addExcuse(data) {
   return res.json();
 }
 
+const Popup = ({ isOpen, onClose, children }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-black/50">
+      <div className="bg-[#212121] flex items-center flex-col rounded-2xl shadow-lg p-6 relative w-152 text-gray-600">
+        <button
+          className="absolute top-2 right-2 text-amber-50 hover:text-gray-500"
+          onClick={onClose}
+        >
+          ✕
+        </button>
+        {children}
+     
+      </div>
+    </div>
+  );
+};
+
 
 export default function App() {
+  const [isOpen, setIsOpen] = useState(false);
    const [author, setAuthor] = useState("");
     const [excuse, setExcuse] = useState("");
     const [count, setCount] = useState(1);
@@ -34,12 +55,15 @@ export default function App() {
 
     const mutation = useMutation({
       mutationFn: addExcuse,
-      onSuccess: (data) => {
+      onSuccess: () => {
         queryClient.invalidateQueries(["excuses"]);
         setAuthor("");
         setExcuse("");
-        alert(data.message)
+        alert("Excuse was saved")
       },
+      onError:() => {
+        alert('Excuse was saved')
+      }
     });
 
     const mutationx2 = useMutation({
@@ -54,6 +78,7 @@ export default function App() {
 
   return (
      <div className="h-screen w-full bg-[#212121] flex flex-col items-center gap-10" style={{ fontFamily: 'Inter', fontStyle: 'italic' }}> 
+      
       <header className="w-full h-1/7 border-b-10 border-[#EF8000] flex items-center justify-between p-4">
       
       <img src="/logo.png" alt="logo" className="w-64 h-64 hover:rotate-180 duration-300 " />
@@ -63,11 +88,19 @@ export default function App() {
         <i class="fa-brands fa-github"></i>
         </div>
         <div className="w-20 h-20 bg-[#EF8000] rounded-full flex items-center justify-center color-black text-6xl hover:bg-[#c06600] hover:border-1 hover:scale-115 duration-300 ease-in-out group transition-all">
-        <i class="fa-solid fa-plus"></i>
+        <i class="fa-solid fa-plus" onClick={() => setIsOpen(true)} ></i>
         </div>
       </div>
 
       </header>
+
+       <Popup isOpen={isOpen} onClose={() => setIsOpen(false)}>
+        <h2 className="text-xl font-bold mb-4 text-[#EF8000]">Hello 👋</h2>
+        <p className="text-2xl text-[#EF8000]">Send your excuse</p>
+         <input type="text" className="bg-black w-full text-gray-600 rounded-2xl p-3 outline-0 border-[#EF8000] border-2 m-2.5" onChange={(e) => setAuthor(e.target.value)}/>
+      <input type="text" className="bg-black w-full text-gray-600 rounded-2xl p-3 outline-0 border-[#EF8000] border-2 m-2.5" onChange={(e) => setExcuse(e.target.value)}/>
+      <button className="bg-black text-gray-600 rounded-2xl p-3 outline-0 border-[#EF8000] border-2 m-2.5 w-2xs" onClick={() => mutation.mutate({author:author, excuse:excuse})} >Send</button>
+      </Popup>
      
 {/* 
       <div className="w-full max-w-md bg-white rounded-2xl shadow p-4 flex flex-col gap-3">
@@ -114,15 +147,17 @@ export default function App() {
 
         {data && (
           <div className="flex flex-col gap-2">
-            {data.map((item) => (
+            {
               <div
-                key={item.id}
+                key={data._id}
                 className="p-3 rounded-xl bg-gray-100 shadow"
               >
-                <p className="font-semibold">{item.author}</p>
-                <p className="text-gray-700">{item.excuse}</p>
+                <p className="font-semibold">{data.author}</p>
+                <p className="text-gray-700">{data.excuse}</p>
+                <p className="text-gray-700">{data.likes}</p>
+              
               </div>
-            ))}
+            }
           </div>
         )}
       </div>
